@@ -1,0 +1,44 @@
+class Solution {
+    public int maximumGain(String s, int x, int y) {
+        // Prioritize the higher score substring
+        char first = 'a', second = 'b';
+        int highScore = x, lowScore = y;
+        
+        // Swap if 'ba' has higher score than 'ab'
+        if (y > x) {
+            first = 'b';
+            second = 'a';
+            highScore = y;
+            lowScore = x;
+        }
+
+        // Stack to track valid characters for maximum score
+        StringBuilder stack1 = new StringBuilder();
+        int maxScore = 0;
+
+        // First, remove the higher scoring pair
+        for (char c : s.toCharArray()) {
+            if (stack1.length() > 0 && stack1.charAt(stack1.length() - 1) == first && c == second) {
+                stack1.deleteCharAt(stack1.length() - 1);
+                maxScore += highScore;
+            } else {
+                stack1.append(c);
+            }
+        }
+
+        // Stack for the remaining lower score substring
+        StringBuilder stack2 = new StringBuilder();
+
+        for (int i = 0; i < stack1.length(); i++) {
+            char c = stack1.charAt(i);
+            if (stack2.length() > 0 && stack2.charAt(stack2.length() - 1) == second && c == first) {
+                stack2.deleteCharAt(stack2.length() - 1);
+                maxScore += lowScore;
+            } else {
+                stack2.append(c);
+            }
+        }
+
+        return maxScore;
+    }
+}
