@@ -1,0 +1,28 @@
+import java.util.*;
+
+class Solution {
+    public int minOperations(int[] target, int[] arr) {
+        Map<Integer, Integer> targetIndex = new HashMap<>();
+        for (int i = 0; i < target.length; i++) {
+            targetIndex.put(target[i], i);
+        }
+
+        List<Integer> lis = new ArrayList<>();
+        for (int num : arr) {
+            if (targetIndex.containsKey(num)) {
+                int index = targetIndex.get(num);
+                int pos = Collections.binarySearch(lis, index);
+                if (pos < 0) {
+                    pos = -(pos + 1);
+                }
+                if (pos < lis.size()) {
+                    lis.set(pos, index);
+                } else {
+                    lis.add(index);
+                }
+            }
+        }
+
+        return target.length - lis.size();
+    }
+}
